@@ -6023,14 +6023,13 @@ em {
 blockquote {
   margin: 1em 0;
   padding: 1em 1.25em;
-/*background: #f8f8f8;  rgba(37,104,163,0.1) */
 /*border: 1px solid #eeeeee;*/
   border-left: 3px solid #25688f;
-/*border-radius: 3px;*/
+  border-radius: 3px;
   font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-  font-weight: lighter;
-  font-size: 1em;
   background-color: #f7f7f9;
+  font-size: 0.9em;
+  font-weight: bold;
 /*text-align: center; */
 }
 blockquote p:last-child {
@@ -6059,11 +6058,12 @@ ul {
 }
 code {
   padding: 0.1em 0.4em;
-  background: #f2f8ff;
+  background: #0ff;
   border: 1px solid #edf6fd;
   border-radius: 3px;
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   font-size: 0.9em;
+  font-weight: bold;
   vertical-align: bottom;
   word-wrap: break-word;
 }
@@ -6075,7 +6075,7 @@ pre {
   border-radius: 3px;
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   font-size: 0.9em;
-  font-weight: normal;
+  font-weight: bold;
   line-height: 1.3em;
   overflow: scroll;
 }
