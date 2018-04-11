@@ -212,7 +212,66 @@
 <h5 id="最终网卡设备配置详情表"><a href="#最终网卡设备配置详情表" class="headerlink" title="最终网卡设备配置详情表"></a><strong>最终网卡设备配置详情表</strong></h5><blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">TYPE=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=yes</span><br><span class="line">IPV6_AUTOCONF=yes</span><br><span class="line">IPV6_DEFROUTE=yes</span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">IPV6_ADDR_GEN_MODE=stable-privacy</span><br><span class="line">NAME=ens33</span><br><span class="line">UUID=f47bde51-fa78-4f79-b68f-d5dd90cfc698</span><br><span class="line">DEVICE=ens33</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.1.111</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.1.1</span><br><span class="line">DNS1=127.207.160.106</span><br><span class="line">DNS2=219.239.26.42</span><br></pre></td></tr></table></figure>
 </blockquote>
-<h2 id="MySql-篇"><a href="#MySql-篇" class="headerlink" title="MySql 篇"></a><strong>MySql 篇</strong></h2><h2 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h2><p><hr style="width: 100%;margin: 0px;border: 0;border-bottom: 2px solid black;"><br>　　<font style="font-weight: bold;">如果我的文章有错误或不足之处,由于这套主题并没有集成评论系统,请务必在我的github评论中留言指出，千万不用客气，万分感谢~</font><br> <img src="/2018/04/04/LMTJ/2.jpg"> </p>
+<h2 id="MySql-篇"><a href="#MySql-篇" class="headerlink" title="MySql 篇"></a><strong>MySql 篇</strong></h2><h3 id="1、配置yum源"><a href="#1、配置yum源" class="headerlink" title="1、配置yum源"></a><strong>1、配置yum源</strong></h3><blockquote>
+<p>在MySql官网中下载yum源rpm安装包:<code>https://dev.mysql.com/downloads/repo/yum/</code></p>
+</blockquote>
+ <img src="/2018/04/04/LMTJ/mysql.png">
+<blockquote>
+<p>下载mysql源安装包<br> <code>shell&gt; wget https://dev.mysql.com/downloads/repo/yum/mysql57-community-release-el7-11.noarch.rpm</code></p>
+</blockquote>
+<blockquote>
+<p>安装mysql源<br> <code>shell&gt; yum localinstall mysql57-community-release-el7-11.noarch.rpm</code></p>
+</blockquote>
+<blockquote>
+<p>检查mysql源是否安装成功<br><code>shell&gt; yum repolist enabled | grep &quot;mysql.*-community.*&quot;</code><br><img src="/2018/04/04/LMTJ/mysql2.png"><br>看到上图表示安装成功.</p>
+<blockquote>
+<p>可以修改<code>vim /etc/yum.repos.d/mysql-community.repo</code>源，改变默认安装的mysql版本。比如要安装5.6版本，将5.7源的enabled=1改成enabled=0。然后再将5.6源的enabled=0改成enabled=1即可。改完之后的效果如下所示:<br><img src="/2018/04/04/LMTJ/mysql3.png"></p>
+</blockquote>
+</blockquote>
+<h3 id="2、安装MySql"><a href="#2、安装MySql" class="headerlink" title="2、安装MySql"></a><strong>2、安装MySql</strong></h3><blockquote>
+<p><code>shell&gt; yum install mysql-community-server</code></p>
+</blockquote>
+<h3 id="3、启动MySql服务"><a href="#3、启动MySql服务" class="headerlink" title="3、启动MySql服务"></a><strong>3、启动MySql服务</strong></h3><blockquote>
+<p><code>shell&gt; systemctl start mysqld</code>  </p>
+</blockquote>
+<blockquote>
+<p>查看mysql的启动状态<br><code>shell&gt; systemctl status mysqld</code><br><img src="/2018/04/04/LMTJ/mysql4.png"></p>
+</blockquote>
+<h3 id="4、开机启动"><a href="#4、开机启动" class="headerlink" title="4、开机启动"></a><strong>4、开机启动</strong></h3><blockquote>
+<p><code>shell&gt; systemctl enable mysqld</code><br><code>shell&gt; systemctl daemon-reload</code></p>
+</blockquote>
+<h3 id="5、修改root本地登录密码"><a href="#5、修改root本地登录密码" class="headerlink" title="5、修改root本地登录密码"></a><strong>5、修改root本地登录密码</strong></h3><blockquote>
+<p>mysql安装完成之后，在/var/log/mysqld.log文件中给root生成了一个默认密码。通过下面的方式找到root默认密码，然后登录mysql进行修改:<br><code>shell&gt; grep &#39;temporary password&#39; /var/log/mysqld.log</code><br><img src="/2018/04/04/LMTJ/mysql5.png"></p>
+</blockquote>
+<blockquote>
+<p><code>shell&gt; mysql -uroot -p</code><br><code>mysql&gt; ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;MyNewPass4!&#39;;</code><br>或者<br><code>mysql&gt; set password for &#39;root&#39;@&#39;localhost&#39;=password(&#39;MyNewPass4!&#39;);</code><br>注意：mysql5.7默认安装了密码安全检查插件（validate_password），默认密码检查策略要求密码必须包含：大小写字母、数字和特殊符号，并且长度不能少于8位。否则会提示ERROR 1819 (HY000): Your password does not satisfy the current policy requirements错误.</p>
+</blockquote>
+<blockquote>
+<p>通过mysql环境变量可以查看密码策略的相关信息:<br><code>mysql&gt; show variables like &#39;%password%&#39;;</code><br><img src="/2018/04/04/LMTJ/mysql6.png"><br>validate_password_policy：密码策略，默认为MEDIUM策略<br>validate_password_dictionary_file：密码策略文件，策略为STRONG才需要<br>validate_password_length：密码最少长度<br>validate_password_mixed_case_count：大小写字符长度，至少1个<br>validate_password_number_count ：数字至少1个<br>validate_password_special_char_count：特殊字符至少1个<br>上述参数是默认策略MEDIUM的密码检查规则。<br>共有以下几种密码策略：<br>策略  检查规则<br>0 or LOW    Length<br>1 or MEDIUM     Length; numeric, lowercase/uppercase, and special characters<br>2 or STRONG     Length; numeric, lowercase/uppercase, and special characters; dictionary file</p>
+</blockquote>
+<blockquote>
+<p>MySQL官网密码策略详细说明:<code>http://dev.mysql.com/doc/refman/5.7/en/validate-password-options-variables.html#sysvar_validate_password_policy</code></p>
+</blockquote>
+<h4 id="修改密码策略"><a href="#修改密码策略" class="headerlink" title="修改密码策略"></a><strong>修改密码策略</strong></h4><blockquote>
+<p>在<code>/etc/my.cnf</code>文件添加validate_password_policy配置，指定密码策略<br>选择0（LOW），1（MEDIUM），2（STRONG）其中一种，选择2需要提供密码字典文件<br><code>validate_password_policy=0</code><br>如果不需要密码策略，添加my.cnf文件中添加如下配置禁用即可：<br><code>validate_password = off</code><br>重新启动mysql服务使配置生效：<br><code>systemctl restart mysqld</code></p>
+</blockquote>
+<h3 id="6、添加远程用户"><a href="#6、添加远程用户" class="headerlink" title="6、添加远程用户"></a><strong>6、添加远程用户</strong></h3><blockquote>
+<p>默认只允许root帐户在本地登录，如果要在其它机器上连接mysql，必须修改root允许远程连接，或者添加一个允许远程连接的帐户，为了安全起见，我添加一个新的帐户：</p>
+</blockquote>
+<blockquote>
+<p><code>mysql&gt; GRANT ALL PRIVILEGES ON *.* TO &#39;yangxin&#39;@&#39;%&#39; IDENTIFIED BY &#39;Yangxin0917!&#39; WITH GRANT OPTION;</code></p>
+</blockquote>
+<h3 id="7、配置默认编码为utf-8"><a href="#7、配置默认编码为utf-8" class="headerlink" title="7、配置默认编码为utf-8"></a><strong>7、配置默认编码为utf-8</strong></h3><blockquote>
+<p>修改/etc/my.cnf配置文件，在[mysqld]下添加编码配置，如下所示：</p>
+<blockquote>
+<p><code>[mysqld]</code><br><code>character_set_server=utf8</code><br><code>init_connect=&#39;SET NAMES utf8&#39;</code><br>重新启动mysql服务，查看数据库默认编码如下所示:<br><img src="/2018/04/04/LMTJ/mysql7.png"></p>
+</blockquote>
+</blockquote>
+<p><hr style="width: 100%"></p>
+<h4 id="默认配置文件路径"><a href="#默认配置文件路径" class="headerlink" title="默认配置文件路径"></a><strong>默认配置文件路径</strong></h4><blockquote>
+<p>配置文件:<code>/etc/my.cnf</code><br>日志文件:<code>/var/log//var/log/mysqld.log</code><br>服务启动脚本:<code>/usr/lib/systemd/system/mysqld.service</code><br>socket文件:<code>/var/run/mysqld/mysqld.pid</code></p>
+</blockquote>
+<h2 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h2><p><hr style="width: 100%;margin: 0px;border: 0;border-bottom: 2px solid black;"><br>　　<font style="font-weight: bold;">如果我的文章有错误或不足之处,由于这套主题并没有集成评论系统,请务必在我的github评论中留言指出，千万不用客气，万分感谢~</font><br> <img src="/2018/04/04/LMTJ/2.jpg"> </p>
 
   </section>
 
